@@ -11,7 +11,8 @@ class AppPages {
 
   static GoRoute onboardPage = GoRoute(
     path: '/onboard',
-    builder: (context, state) => const OnboardPage(),
+    pageBuilder: (context, state) =>
+        buildFadeTransition(state, const OnboardPage()),
   );
 
   static GoRoute homePage = GoRoute(
@@ -24,5 +25,15 @@ class AppPages {
     path: '/login',
     builder: (context, state) =>
         const Scaffold(body: Center(child: Text('Login Page'))),
+  );
+}
+
+CustomTransitionPage buildFadeTransition(GoRouterState state, Widget child) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(opacity: animation, child: child);
+    },
   );
 }

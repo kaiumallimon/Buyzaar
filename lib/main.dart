@@ -1,4 +1,6 @@
 import 'package:buyzaar/core/theme/app_theme.dart';
+import 'package:buyzaar/features/onboard/bloc/onboard_bloc.dart';
+import 'package:buyzaar/features/onboard/bloc/onboard_event.dart';
 import 'package:buyzaar/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:buyzaar/features/splash/presentation/bloc/splash_event.dart';
 import 'package:buyzaar/routes/app_router.dart';
@@ -18,9 +20,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         // SplashBloc
-        BlocProvider(
-          create: (context) => SplashBloc()..add(SplashStarted()),
-        ),
+        BlocProvider(create: (context) => SplashBloc()..add(SplashStarted())),
+
+        // OnboardBloc
+        BlocProvider(create: (context) => OnboardBloc()..add(OnboardStarted())),
       ],
       child: MaterialApp.router(
         title: 'Buyzaar',
