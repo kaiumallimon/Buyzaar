@@ -1,6 +1,8 @@
 import 'package:buyzaar/core/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -13,6 +15,9 @@ class CustomButton extends StatelessWidget {
     this.foregroundColor,
     this.onPressed,
     this.isLoading = false,
+    this.image,
+    this.isOutlined = false,
+    this.elevation,
   });
 
   final double width;
@@ -23,6 +28,9 @@ class CustomButton extends StatelessWidget {
   final Color? foregroundColor;
   final VoidCallback? onPressed;
   final bool isLoading;
+  final String? image;
+  final bool isOutlined;
+  final double? elevation;
 
   @override
   Widget build(BuildContext context) {
@@ -32,22 +40,42 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(AppColors.darkPrimary),
-          foregroundColor: Color(AppColors.lightPrimary),
+          backgroundColor: backgroundColor ?? Color(AppColors.darkPrimary),
+          foregroundColor: foregroundColor ?? Color(AppColors.lightPrimary),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
+          elevation: elevation ?? 0,
+          side: isOutlined
+              ? BorderSide(
+                  color: Color(AppColors.buttonBorderColor),
+                  width: 1.5,
+                )
+              : BorderSide.none,
         ),
         child: isLoading
             ? CupertinoActivityIndicator()
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  image != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: SvgPicture.asset(
+                            image!,
+                            height: 24,
+                            width: 24,
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+
                   Text(
                     text,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Color(AppColors.lightPrimary),
+                      color: foregroundColor ?? Color(AppColors.lightPrimary),
                       fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                   if (icon != null)
@@ -55,7 +83,7 @@ class CustomButton extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Icon(
                         icon,
-                        color: Color(AppColors.lightPrimary),
+                        color: foregroundColor ?? Color(AppColors.lightPrimary),
                         size: 20,
                       ),
                     ),
