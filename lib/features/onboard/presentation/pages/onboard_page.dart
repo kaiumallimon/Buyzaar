@@ -1,9 +1,12 @@
+import 'package:buyzaar/core/constants/sizes.dart';
 import 'package:buyzaar/core/theme/app_colors.dart';
+import 'package:buyzaar/features/onboard/presentation/providers/onboard_provider.dart';
 import 'package:buyzaar/shared/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class OnboardPage extends StatelessWidget {
   const OnboardPage({super.key});
@@ -21,6 +24,11 @@ class OnboardPage extends StatelessWidget {
       ),
     );
 
+    final onboardProvider = Provider.of<OnboardProvider>(
+      context,
+      listen: false,
+    );
+
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
@@ -31,7 +39,7 @@ class OnboardPage extends StatelessWidget {
             buildExtendedBody(h, w),
 
             // button at the bottom
-            _buildGetStartedPanel(h, theme, w),
+            _buildGetStartedPanel(h, theme, w, context, onboardProvider),
           ],
         ),
       ),
@@ -98,7 +106,7 @@ class OnboardPage extends StatelessWidget {
   }
 
   // get started panel at the bottom
-  Container _buildGetStartedPanel(double h, ThemeData theme, double w) {
+  Container _buildGetStartedPanel(double h, ThemeData theme, double w, BuildContext context, OnboardProvider provider) {
     return Container(
       height: h * 0.12,
       decoration: BoxDecoration(
@@ -114,11 +122,13 @@ class OnboardPage extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.defaultSidePadding),
       alignment: Alignment.center,
       child: CustomButton(
         width: w,
-        onPressed: () {},
+        onPressed: () async{
+          await provider.onGetStarted(context);
+        },
         text: 'Get Started',
         icon: Icons.arrow_forward,
       ),

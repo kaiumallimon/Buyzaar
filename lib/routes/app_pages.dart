@@ -1,5 +1,7 @@
+import 'package:buyzaar/features/login/presentation/pages/login_page.dart';
 import 'package:buyzaar/features/onboard/presentation/pages/onboard_page.dart';
 import 'package:buyzaar/features/splash/presentation/pages/splash_page.dart';
+import 'package:buyzaar/routes/transitions.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +13,11 @@ class AppPages {
 
   static GoRoute onboardPage = GoRoute(
     path: '/onboard',
-    pageBuilder: (context, state) =>
-        buildFadeTransition(state, const OnboardPage()),
+    pageBuilder: (context, state) => SlideTransitionPage(
+      child: OnboardPage(),
+      duration: const Duration(milliseconds: 600),
+      key: state.pageKey,
+    ),
   );
 
   static GoRoute homePage = GoRoute(
@@ -23,8 +28,11 @@ class AppPages {
 
   static GoRoute loginPage = GoRoute(
     path: '/login',
-    builder: (context, state) =>
-        const Scaffold(body: Center(child: Text('Login Page'))),
+    pageBuilder: (context, state) => SlideTransitionPage(
+      child: LoginPage(),
+      duration: const Duration(milliseconds: 600),
+      key: state.pageKey,
+    ),
   );
 }
 
